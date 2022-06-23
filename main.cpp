@@ -3,10 +3,35 @@
 #include "base64.h"
 #include "snappy.h"
 #include "decode.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <sstream>
 
 using namespace std;
 
+vector <string> split(string data, char delimiter) {
+    istringstream iss(data);
+    string buffer;
+    vector <string> result;
+    while (getline(iss, buffer, delimiter)) {
+        result.push_back(buffer);
+    }
+    return result;
+}
+
 int main() {
+
+    /////////////////////////////
+    // Array
+    /////////////////////////////
+
+    string str = "AAA,BBB,CCC,DDD,EEE,FFF,GGG";
+    vector <string> r = split(str, ',');
+
+    for (int i = 0; i < r.size(); i++) {
+        cout << r[i] << "\n";
+    }
 
     /////////////////////////////
     // Base64
@@ -37,6 +62,7 @@ int main() {
     for (int i = 0; i < 5; ++i) {
         input += input;
     }
+/*
     snappy::Compress(input.data(), input.size(), &output);
     cout << "input size :" << input.size() << " output size :" << output.size() << endl;
     string output_uncom;
@@ -46,5 +72,6 @@ int main() {
     } else {
         cout << "ERROR : not equal" << endl;
     }
+*/
     return 0;
 }

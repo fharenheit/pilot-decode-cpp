@@ -6,7 +6,15 @@
 #define TRACE_DECODE_DECODE_H
 
 #include <string>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <sstream>
 
-std::string decode(std::string const &encoded, std::string const &write_path);
+using namespace std;
+
+string decode(string const &encoded, string const &write_path);
+
+vector <string> split_by_delimiter(string data, char delimiter);
 
 #endif //TRACE_DECODE_DECODE_H
