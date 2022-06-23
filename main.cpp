@@ -26,6 +26,10 @@ int main() {
     /// Array Unnest
     /////////////////////////////
 
+    cout << "======================================" << endl;
+    cout << "Starting Array Unnest" << endl;
+    cout << "======================================" << endl;
+
     string unnest_string = "a`b`c`d`e`f`a|b|c|d|e|f`1|2|3|4|5|6`g|h|i|j|k|l`0|9|8|7|6|5";
     vector <string> r = split(unnest_string, '`');
 
@@ -63,8 +67,12 @@ int main() {
     /// Array Unnest from File
     /////////////////////////////
 
-    Stopwatch watch;
-    watch.start();
+    cout << "======================================" << endl;
+    cout << "Starting Array Unnest From File" << endl;
+    cout << "======================================" << endl;
+
+    Stopwatch watch1;
+    watch1.start();
 
     string line;
     ifstream csv_file("array.txt");
@@ -104,15 +112,50 @@ int main() {
             }
         }
         csv_file.close();
-        uint64_t elapsed_s = watch.elapsed<seconds>();
+        uint64_t elapsed_s = watch1.elapsed<seconds>();
 
         cout << "Row Count : " << count << endl;
         cout << "Elapsed : " << elapsed_s << "s" << endl;
     }
 
     /////////////////////////////
+    /// Snappy Compression
+    /// Base64 Encode
+    /// File Write
+    /////////////////////////////
+
+    cout << "======================================" << endl;
+    cout << "Starting Encoded Data" << endl;
+    cout << "======================================" << endl;
+
+    Stopwatch watch2;
+    watch2.start();
+
+    string string_to_encoding = "a`b`c`d`e`f`a|b|c|d|e|f`1|2|3|4|5|6`g|h|i|j|k|l`0|9|8|7|6|5";
+    ofstream encoded_csv_file;
+    encoded_csv_file.open("array_encoded.txt");
+    if (encoded_csv_file.is_open()) {
+        for (int i = 0; i <= 200000; i++) {
+            string output;
+            snappy::Compress(string_to_encoding.data(), string_to_encoding.size(), &output);
+            output.append("\n");
+            string encoded = base64_encode(reinterpret_cast<const unsigned char *>(output.c_str()), output.length());
+            encoded_csv_file.write(encoded.c_str(), encoded.length() - 1);
+        }
+    }
+    encoded_csv_file.close();
+
+    uint64_t watch2_elapsed_s = watch2.elapsed<seconds>();
+
+    cout << "Elapsed : " << watch2_elapsed_s << "s" << endl;
+
+    /////////////////////////////
     /// Base64
     /////////////////////////////
+
+    cout << "======================================" << endl;
+    cout << "Starting Base64" << endl;
+    cout << "======================================" << endl;
 
     const string orig = "René Nyffenegger\n"
                         "http://www.renenyffenegger.ch\n"
@@ -133,6 +176,10 @@ int main() {
     /////////////////////////////
     /// Snappy
     /////////////////////////////
+
+    cout << "======================================" << endl;
+    cout << "Starting Snappy " << endl;
+    cout << "======================================" << endl;
 
     string input = "Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.)";
     string output;
