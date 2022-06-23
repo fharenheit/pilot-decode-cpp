@@ -1,12 +1,10 @@
 #include <string>
 #include <iostream>
+#include <vector>
+#include <sstream>
 #include "base64.h"
 #include "snappy.h"
 #include "decode.h"
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
 
 using namespace std;
 
