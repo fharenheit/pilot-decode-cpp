@@ -1,18 +1,18 @@
 #include <iostream>
-#include "base64.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <sstream>
+#include "base64.h"
+#include "snappy.h"
 
 using namespace std;
 
 string decode(const string &encoded, const string &write_path) {
     string decoded = base64_decode(encoded);
-    cout << decoded << endl;
-    cout << write_path << endl;
-
-    return string();
+    string result;
+    snappy::Compress(decoded.data(), decoded.size(), &result)
+    return result;
 }
 
 vector <string> split_by_delimiter(string data, char delimiter) {
