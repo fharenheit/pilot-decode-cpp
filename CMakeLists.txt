@@ -12,6 +12,6 @@ link_libraries(snappy)
 include_directories(${SNAPPY_PATH})
 FIND_LIBRARY(SNAPPY_LIB NAMES libsnappy.a HINTS ${SNAPPY_PATH} NO_DEFAULT_PATH)
 
-add_executable(trace_decode main.cpp base64.h base64.cpp decode.h decode.cpp)
+add_executable(trace_decode main.cpp base64.h base64.cpp decode.h decode.cpp stopwatch.hpp)
 
 target_link_libraries(trace_decode -Lsnappy ${SNAPPY_LIB})

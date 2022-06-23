@@ -2,9 +2,11 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <fstream>
 #include "base64.h"
 #include "snappy.h"
 #include "decode.h"
+#include "stopwatch.hpp"
 
 using namespace std;
 
@@ -55,6 +57,57 @@ int main() {
                     .append(column10[i]);
             cout << row << endl;
         }
+    }
+
+    /////////////////////////////
+    /// Array Unnest from File
+    /////////////////////////////
+
+    Stopwatch watch;
+    watch.start();
+
+    string line;
+    ifstream csv_file("array.txt");
+    long count = 0;
+    if (csv_file.is_open()) {
+        while (getline(csv_file, line)) {
+            vector <string> r = split(line, '`');
+            for (int i = 0; i < r.size(); i++) {
+                string column1 = r[0];
+                string column2 = r[1];
+                string column3 = r[2];
+                string column4 = r[3];
+                string column5 = r[4];
+                string column6 = r[5];
+
+                vector <string> column7 = split(r[6], '|');
+                vector <string> column8 = split(r[7], '|');
+                vector <string> column9 = split(r[8], '|');
+                vector <string> column10 = split(r[9], '|');
+
+                int array_count = column7.size();
+                column1.append(",")
+                        .append(column2).append(",")
+                        .append(column3).append(",")
+                        .append(column4).append(",")
+                        .append(column5).append(",")
+                        .append(column6);
+                for (int i = 0; i < array_count; i++) {
+                    string row;
+                    row.append(column1).append(",").append(column7[i]).append(",")
+                            .append(column8[i]).append(",")
+                            .append(column9[i]).append(",")
+                            .append(column10[i]);
+                    // cout << row << endl;
+                    count++;
+                }
+            }
+        }
+        csv_file.close();
+        uint64_t elapsed_s = watch.elapsed<seconds>();
+
+        cout << "Row Count : " << count << endl;
+        cout << "Elapsed : " << elapsed_s << "s" << endl;
     }
 
     /////////////////////////////
