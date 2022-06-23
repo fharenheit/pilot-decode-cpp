@@ -62,9 +62,10 @@ int main() {
     for (int i = 0; i < 5; ++i) {
         input += input;
     }
-/*
+
     snappy::Compress(input.data(), input.size(), &output);
     cout << "input size :" << input.size() << " output size :" << output.size() << endl;
+
     string output_uncom;
     snappy::Uncompress(output.data(), output.size(), &output_uncom);
     if (input == output_uncom) {
@@ -72,6 +73,6 @@ int main() {
     } else {
         cout << "ERROR : not equal" << endl;
     }
-*/
+
     return 0;
 }
