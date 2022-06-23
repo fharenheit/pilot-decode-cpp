@@ -11,7 +11,7 @@ using namespace std;
 string decode(const string &encoded, const string &write_path) {
     string decoded = base64_decode(encoded);
     string result;
-    snappy::Compress(decoded.data(), decoded.size(), &result)
+    snappy::Compress(decoded.data(), decoded.size(), &result);
     return result;
 }
 
