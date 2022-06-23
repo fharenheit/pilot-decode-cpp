@@ -57,7 +57,7 @@ int main() {
     // Snappy
     /////////////////////////////
 
-    string input = "This is snappy example.";
+    string input = "Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.)";
     string output;
     for (int i = 0; i < 5; ++i) {
         input += input;
@@ -65,6 +65,7 @@ int main() {
 
     snappy::Compress(input.data(), input.size(), &output);
     cout << "input size :" << input.size() << " output size :" << output.size() << endl;
+    cout << output << endl;
 
     string output_uncom;
     snappy::Uncompress(output.data(), output.size(), &output_uncom);
