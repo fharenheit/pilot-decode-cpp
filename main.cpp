@@ -4,62 +4,47 @@
 #include "snappy.h"
 #include "decode.h"
 
+using namespace std;
+
 int main() {
 
     /////////////////////////////
     // Base64
     /////////////////////////////
 
-    const std::string orig =
-            "René Nyffenegger\n"
-            "http://www.renenyffenegger.ch\n"
-            "passion for data\n";
+    const string orig = "René Nyffenegger\n"
+                        "http://www.renenyffenegger.ch\n"
+                        "passion for data\n";
 
-    const std::string write_path = "/home/data/A0000/dir.txt";
+    const string write_path = "/home/data/A0000/dir.txt";
 
-    std::string encoded = base64_encode(reinterpret_cast<const unsigned char *>(orig.c_str()), orig.length());
+    string encoded = base64_encode(reinterpret_cast<const unsigned char *>(orig.c_str()), orig.length());
 
-    std::string result = decode(encoded, write_path);
-    std::cout << result << std::endl;
+    string result = decode(encoded, write_path);
+    cout << result << endl;
 
-    std::string decoded = base64_decode(encoded);
+    string decoded = base64_decode(encoded);
 
-    std::cout << encoded << std::endl;
-    std::cout << decoded << std::endl;
+    cout << encoded << endl;
+    cout << decoded << endl;
 
     /////////////////////////////
     // Snappy
     /////////////////////////////
 
-    std::string input = "This is snappy example.";
-    std::string output;
-    for (int i = 0; i < 5; ++i)                        //loop to increase the length of input string
-    {
+    string input = "This is snappy example.";
+    string output;
+    for (int i = 0; i < 5; ++i) {
         input += input;
     }
-
-    std::cout << input << std::endl;
-
-    //snappy::Compress(input.data(), input.size(), &output);
-
-    /*
-    std::string input = "This is snappy example.";
-    std::string output;
-    for (int i = 0; i < 5; ++i)                        //loop to increase the length of input string
-    {
-        input += input;
-    }
-    snappy::Compress(input.data(), input.size(), &output);        //compress input string by snappy
-    std::cout << "input size :" << input.size() << " output size :" << output.size() << std::endl;
-    std::string output_uncom;                        //define uncompressed output string variable
-    snappy::Uncompress(output.data(), output.size(), &output_uncom);    //uncompress the compressed string
-    if (input == output_uncom)                    //compare the string before compression and uncompressed string
-    {
-        std::cout << "Equal " << std::endl;
+    snappy::Compress(input.data(), input.size(), &output);
+    cout << "input size :" << input.size() << " output size :" << output.size() << endl;
+    string output_uncom;
+    snappy::Uncompress(output.data(), output.size(), &output_uncom);
+    if (input == output_uncom) {
+        cout << "Equal " << endl;
     } else {
-        std::cout << "ERROR : not equal" << std::endl;
+        cout << "ERROR : not equal" << endl;
     }
-
-*/
     return 0;
 }
