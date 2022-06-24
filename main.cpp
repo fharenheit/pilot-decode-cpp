@@ -145,15 +145,24 @@ void snappy_compress_and_base64_decoding() {
     Stopwatch watch;
     watch.start();
 
-    ifstream encoded_csv_file("array_snappy_base64_encoded.txt");
+    ifstream encoded_csv_file("test.txt");
     string output;
+
+    string verification_string = "tQNkU25hcHB5IGlzIGEgY29tcHJlc3Npb24vZGUdDpAgbGlicmFyeS4gSXQgZG9lcyBub3QgYWltIGZvciBtYXhpbXVtLj8ADCwgb3IFEFhhdGliaWxpdHkgd2l0aCBhbnkgb3RoZQkdDWwRXjA7IGluc3RlYWQsIGl0AV4AcwVfeHZlcnkgaGlnaCBzcGVlZHMgYW5kIHJlYXNvbmFibGUFZw1KEC4gRm9yBUYQYW5jZSwFG4hhcmVkIHRvIHRoZSBmYXN0ZXN0IG1vZGUgb2YgemxpYiwgUzkDGG4gb3JkZXIBHBxtYWduaXR1ZA02AHIFjDxtb3N0IGlucHV0cywgYnV0BVYgcmVzdWx0aW5nBXABi3RlZCBmaWxlcyBhcmUgYW55d2hlcmUgZnJvbSAyMCUBjjQxMDAlIGJpZ2dlci4gKAG2ZG1vcmUgaW5mb3JtYXRpb24sIHNlZSAiUGVyBRMwbmNlIiwgYmVsb3cuKQ==";
+
+/*    while (getline(encoded_csv_file, output)){
+        // if(output == verification_string) cout << "Equal" << endl;
+        cout << output << endl;
+    }*/
+
     while (encoded_csv_file.peek() != EOF) {
         string final_decoded;
         getline(encoded_csv_file, output);
-        string decoded = base64_decode(output, output.length());
+        cout << "ENCODED : " << output << endl;
+        string decoded = base64_decode(output.c_str(), output.length());
+        cout << "BASE64 DECODED : " << decoded << endl;
         snappy::Compress(decoded.data(), decoded.size(), &final_decoded);
-
-        cout << final_decoded << endl;
+        cout << "SNAPPY UNCOMPRESSED : " << final_decoded << endl;
     }
 
     encoded_csv_file.close();
@@ -168,21 +177,14 @@ void base64_encoding_decoding() {
     cout << "Starting Base64" << endl;
     cout << "======================================" << endl;
 
-    const string orig = "René Nyffenegger\n"
-                        "http://www.renenyffenegger.ch\n"
-                        "passion for data\n";
-
-    const string write_path = "/home/data/A0000/dir.txt";
+    const string orig = "Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.) Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.) Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.)";
 
     string encoded = base64_encode(reinterpret_cast<const unsigned char *>(orig.c_str()), orig.length());
-
-    string result = decode(encoded, write_path);
-    cout << result << endl;
-
     string decoded = base64_decode(encoded);
 
-    cout << encoded << endl;
-    cout << decoded << endl;
+    cout << "ORIGINAL : " << orig << endl;
+    cout << "ENCODED : " << encoded << endl;
+    cout << "DECODED : " << decoded << endl;
 }
 
 void snappy_compress_decompress() {
@@ -190,29 +192,47 @@ void snappy_compress_decompress() {
     cout << "Starting Snappy " << endl;
     cout << "======================================" << endl;
 
-    string input = "Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.)";
-    string output;
-    for (int i = 0; i < 5; ++i) {
-        input += input;
-    }
+    string input = "Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.) Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.) Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.)";
+    string compressed;
 
-    cout << "original : " << input << endl;
+    cout << "ORIGINAL : " << input << endl;
 
-    snappy::Compress(input.data(), input.size(), &output);
-    cout << "input size :" << input.size() << " output size :" << output.size() << endl;
-    cout << output << endl;
+    snappy::Compress(input.data(), input.size(), &compressed);
+    cout << "ORIGINAL SIZE :" << input.size() << " COMPRESSED SIZE :" << compressed.size() << endl;
+    cout << "COMPRESSED : " << compressed << endl;
 
-    cout << "compressed : " << output << endl;
-
-    string output_uncom;
-    snappy::Uncompress(output.data(), output.size(), &output_uncom);
-    if (input == output_uncom) {
-        cout << "Equal " << endl;
+    string decompressed;
+    snappy::Uncompress(compressed.data(), compressed.size(), &decompressed);
+    if (input == decompressed) {
+        cout << "RESULT : EQUAL " << endl;
     } else {
-        cout << "ERROR : not equal" << endl;
+        cout << "RESULT : NOT EQUAL" << endl;
     }
 
-    cout << "decompressed : " << output_uncom << endl;
+    cout << "DECOMPRESSED : " << decompressed << endl;
+}
+
+void base64_snappy_verify() {
+    cout << "=================================================" << endl;
+    cout << "BASE64 ENCODING & SNAPPY COMPRESION VERIFY" << endl;
+    cout << "=================================================" << endl;
+
+    string compressed;
+    string input = "Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.) Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.) Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.)";
+    snappy::Compress(input.data(), input.size(), &compressed);
+
+    cout << "ORIGINAL : " << input << endl;
+    cout << "COMPRESSED : " << compressed << endl;
+
+    string encoded = base64_encode(reinterpret_cast<const unsigned char *>(compressed.c_str()), compressed.length());
+    cout << "ENCODED : " << encoded << endl;
+
+    string decoded = base64_decode(encoded);
+    cout << "DECODED : " << decoded << endl;
+
+    string decompressed;
+    snappy::Uncompress(decoded.data(), decoded.size(), &decompressed);
+    cout << "DECOMPRESSED : " << decompressed << endl;
 }
 
 int main() {
@@ -236,19 +256,16 @@ int main() {
     /////////////////////////////
 
     // snappy_compress_and_base64_encoding();
-    //snappy_compress_and_base64_decoding();
 
     /////////////////////////////
-    /// Base64
+    /// Base64 & Snappy
     /////////////////////////////
 
-    // base64_encoding_decoding();
-
-    /////////////////////////////
-    /// Snappy
-    /////////////////////////////
-
+    base64_encoding_decoding();
     snappy_compress_decompress();
+    base64_snappy_verify();
+
+    snappy_compress_and_base64_decoding();
 
     return 0;
 }
