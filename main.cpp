@@ -120,14 +120,13 @@ void snappy_compress_and_base64_encoding() {
     Stopwatch watch;
     watch.start();
 
-//    string input = "Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.)";
     string input = "Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.)Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.)Snappy is a compression/decompression library. It does not aim for maximum compression, or compatibility with any other compression library; instead, it aims for very high speeds and reasonable compression. For instance, compared to the fastest mode of zlib, Snappy is an order of magnitude faster for most inputs, but the resulting compressed files are anywhere from 20% to 100% bigger. (For more information, see \"Performance\", below.)";
     string string_to_encoding = "a`b`c`d`e`f`a|b|c|d|e|f`1|2|3|4|5|6`g|h|i|j|k|l`1|2|3|4|5|6";
     ofstream encoded_csv_file("array_plain_text.txt");
     for (int i = 0; i <= 200000; i++) {
         string output;
-//        snappy::Compress(input.data(), input.size(), &output);
-        //string encoded = base64_encode(reinterpret_cast<const unsigned char *>(output.c_str()), output.length());
+        snappy::Compress(input.data(), input.size(), &output);
+        string encoded = base64_encode(reinterpret_cast<const unsigned char *>(output.c_str()), output.length());
         encoded_csv_file << input << endl;
     }
     encoded_csv_file.close();
@@ -146,23 +145,16 @@ void snappy_compress_and_base64_decoding() {
     watch.start();
 
     ifstream encoded_csv_file("test.txt");
+    ofstream decoded_csv_file("decoded_output.txt");
     string output;
-
-    string verification_string = "tQNkU25hcHB5IGlzIGEgY29tcHJlc3Npb24vZGUdDpAgbGlicmFyeS4gSXQgZG9lcyBub3QgYWltIGZvciBtYXhpbXVtLj8ADCwgb3IFEFhhdGliaWxpdHkgd2l0aCBhbnkgb3RoZQkdDWwRXjA7IGluc3RlYWQsIGl0AV4AcwVfeHZlcnkgaGlnaCBzcGVlZHMgYW5kIHJlYXNvbmFibGUFZw1KEC4gRm9yBUYQYW5jZSwFG4hhcmVkIHRvIHRoZSBmYXN0ZXN0IG1vZGUgb2YgemxpYiwgUzkDGG4gb3JkZXIBHBxtYWduaXR1ZA02AHIFjDxtb3N0IGlucHV0cywgYnV0BVYgcmVzdWx0aW5nBXABi3RlZCBmaWxlcyBhcmUgYW55d2hlcmUgZnJvbSAyMCUBjjQxMDAlIGJpZ2dlci4gKAG2ZG1vcmUgaW5mb3JtYXRpb24sIHNlZSAiUGVyBRMwbmNlIiwgYmVsb3cuKQ==";
-
-/*    while (getline(encoded_csv_file, output)){
-        // if(output == verification_string) cout << "Equal" << endl;
-        cout << output << endl;
-    }*/
 
     while (encoded_csv_file.peek() != EOF) {
         string final_decoded;
         getline(encoded_csv_file, output);
-        cout << "ENCODED : " << output << endl;
         string decoded = base64_decode(output.c_str(), output.length());
-        cout << "BASE64 DECODED : " << decoded << endl;
-        snappy::Compress(decoded.data(), decoded.size(), &final_decoded);
-        cout << "SNAPPY UNCOMPRESSED : " << final_decoded << endl;
+        snappy::Uncompress(decoded.data(), decoded.size(), &final_decoded);
+
+        decoded_csv_file << final_decoded << endl;
     }
 
     encoded_csv_file.close();
@@ -214,7 +206,7 @@ void snappy_compress_decompress() {
 
 void base64_snappy_verify() {
     cout << "=================================================" << endl;
-    cout << "BASE64 ENCODING & SNAPPY COMPRESION VERIFY" << endl;
+    cout << "BASE64 ENCODING & SNAPPY COMPRESSION VERIFY" << endl;
     cout << "=================================================" << endl;
 
     string compressed;
@@ -261,9 +253,9 @@ int main() {
     /// Base64 & Snappy
     /////////////////////////////
 
-    base64_encoding_decoding();
-    snappy_compress_decompress();
-    base64_snappy_verify();
+//    base64_encoding_decoding();
+//    snappy_compress_decompress();
+//    base64_snappy_verify();
 
     snappy_compress_and_base64_decoding();
 
