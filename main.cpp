@@ -10,10 +10,10 @@
 
 using namespace std;
 
-vector <string> split(string data, char delimiter) {
+vector<string> split(string data, char delimiter) {
     istringstream iss(data);
     string buffer;
-    vector <string> result;
+    vector<string> result;
     while (getline(iss, buffer, delimiter)) {
         result.push_back(buffer);
     }
@@ -26,7 +26,7 @@ void unnest_array() {
     cout << "======================================" << endl;
 
     string unnest_string = "a`b`c`d`e`f`a|b|c|d|e|f`1|2|3|4|5|6`g|h|i|j|k|l`0|9|8|7|6|5";
-    vector <string> r = split(unnest_string, '`');
+    vector<string> r = split(unnest_string, '`');
 
     for (int i = 0; i < r.size(); i++) {
         string column1 = r[0];
@@ -36,10 +36,10 @@ void unnest_array() {
         string column5 = r[4];
         string column6 = r[5];
 
-        vector <string> column7 = split(r[6], '|');
-        vector <string> column8 = split(r[7], '|');
-        vector <string> column9 = split(r[8], '|');
-        vector <string> column10 = split(r[9], '|');
+        vector<string> column7 = split(r[6], '|');
+        vector<string> column8 = split(r[7], '|');
+        vector<string> column9 = split(r[8], '|');
+        vector<string> column10 = split(r[9], '|');
 
         int array_count = column7.size();
         column1.append(",")
@@ -72,7 +72,7 @@ void loading_and_unnest_array(bool is_file_writing) {
     long count = 0;
     if (csv_file.is_open()) {
         while (getline(csv_file, line)) {
-            vector <string> r = split(line, '`');
+            vector<string> r = split(line, '`');
             for (int i = 0; i < r.size(); i++) {
                 string column1 = r[0];
                 string column2 = r[1];
@@ -81,10 +81,10 @@ void loading_and_unnest_array(bool is_file_writing) {
                 string column5 = r[4];
                 string column6 = r[5];
 
-                vector <string> column7 = split(r[6], '|');
-                vector <string> column8 = split(r[7], '|');
-                vector <string> column9 = split(r[8], '|');
-                vector <string> column10 = split(r[9], '|');
+                vector<string> column7 = split(r[6], '|');
+                vector<string> column8 = split(r[7], '|');
+                vector<string> column9 = split(r[8], '|');
+                vector<string> column10 = split(r[9], '|');
 
                 int array_count = column7.size();
                 column1.append(",")
@@ -256,8 +256,12 @@ int main() {
 //    base64_encoding_decoding();
 //    snappy_compress_decompress();
 //    base64_snappy_verify();
+//    snappy_compress_and_base64_decoding();
 
-    snappy_compress_and_base64_decoding();
+    string encoded = "oQpkU25hcHB5IGlzIGEgY29tcHJlc3Npb24vZGUdDpAgbGlicmFyeS4gSXQgZG9lcyBub3QgYWltIGZvciBtYXhpbXVtLj8ADCwgb3IFEFhhdGliaWxpdHkgd2l0aCBhbnkgb3RoZQkdDWwRXiw7IGluc3RlYWQsIGkFXgBzBV94dmVyeSBoaWdoIHNwZWVkcyBhbmQgcmVhc29uYWJsZQVnDUoQLiBGb3IFRhBhbmNlLAUbiGFyZWQgdG8gdGhlIGZhc3Rlc3QgbW9kZSBvZiB6bGliLCBTOQMYbiBvcmRlcgEcHG1hZ25pdHVkDTYAcgWMPG1vc3QgaW5wdXRzLCBidXQFViByZXN1bHRpbmcFcAGLLGVkIGZpbGVzIGFyZQH0NHdoZXJlIGZyb20gMjAlAY40MTAwJSBiaWdnZXIuICgBtmRtb3JlIGluZm9ybWF0aW9uLCBzZWUgIlBlcgUTMG5jZSIsIGJlbG93LikuswAVdf62Af62Af62Af62Af62Af62Af62Af62Af62Af62Af62Af62Af62AVq2AQ==";
+    string file_path = "output.txt";
+
+    decode(encoded, file_path);
 
     return 0;
 }

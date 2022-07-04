@@ -1,17 +1,21 @@
 #include <iostream>
-#include <iostream>
 #include <string>
 #include <vector>
 #include <sstream>
 #include "base64.h"
 #include "snappy.h"
+#include <fstream>
 
 using namespace std;
 
 string decode(const string &encoded, const string &write_path) {
+    ofstream encoded_csv_file(write_path);
     string decoded = base64_decode(encoded);
     string result;
-    snappy::Compress(decoded.data(), decoded.size(), &result);
+    snappy::Uncompress(decoded.data(), decoded.size(), &result);
+    cout << result << endl;
+    encoded_csv_file << result << endl;
+    encoded_csv_file.close();
     return result;
 }
 
